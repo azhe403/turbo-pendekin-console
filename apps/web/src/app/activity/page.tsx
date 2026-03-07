@@ -1,7 +1,18 @@
 "use client"
 
 import * as React from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@az/ui"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+} from "@az/ui"
 import {
     Link as LinkIcon,
     BarChart3,
@@ -112,8 +123,14 @@ const activities = [
 ]
 
 export default function ActivityPage() {
-    const [selectedId, setSelectedId] = React.useState<number>(activities[0].id)
+    const [selectedId, setSelectedId] = React.useState<number | null>(null)
+    const [isDetailOpen, setIsDetailOpen] = React.useState(false)
     const selectedActivity = activities.find(a => a.id === selectedId)
+
+    const handleActivityClick = (id: number) => {
+        setSelectedId(id)
+        setIsDetailOpen(true)
+    }
 
     return (
         <div className="flex flex-1 flex-col gap-6">
@@ -124,9 +141,9 @@ export default function ActivityPage() {
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-180px)] min-h-[600px]">
-                {/* Left Column: Activity List */}
-                <Card className="lg:col-span-8 flex flex-col overflow-hidden">
+            <div className="h-[calc(100vh-180px)] min-h-[600px]">
+                {/* Full Width Activity List */}
+                <Card className="flex flex-col overflow-hidden h-full">
                     <CardHeader className="border-b bg-muted/30 py-4">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-lg">Recent Changes</CardTitle>
@@ -142,9 +159,9 @@ export default function ActivityPage() {
                                     key={activity.id}
                                     className={cn(
                                         "group flex gap-3 p-4 transition-all cursor-pointer hover:bg-muted/50",
-                                        selectedId === activity.id && "bg-sidebar-accent border-r-2 border-primary"
+                                        selectedId === activity.id && "bg-sidebar-accent"
                                     )}
-                                    onClick={() => setSelectedId(activity.id)}
+                                    onClick={() => handleActivityClick(activity.id)}
                                 >
                                     <div className={cn(
                                         "flex aspect-square size-9 shrink-0 items-center justify-center rounded-lg",
@@ -177,13 +194,15 @@ export default function ActivityPage() {
                         </div>
                     </CardContent>
                 </Card>
+            </div>
 
-                {/* Right Column: Detail View */}
-                <Card className="lg:col-span-4 flex flex-col overflow-hidden bg-muted/5">
-                    {selectedActivity ? (
+            {/* Activity Detail Dialog */}
+            <Dialog open={isDetailOpen} onOpenChange={setIsDetailOpen}>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
+                    {selectedActivity && (
                         <>
-                            <CardHeader className="border-b bg-background py-6">
-                                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-6">
+                            <DialogHeader className="p-6 border-b bg-muted/30 sticky top-0 z-10 backdrop-blur-sm">
+                                <div className="flex items-start justify-between gap-4">
                                     <div className="flex items-center gap-4">
                                         <div className={cn(
                                             "flex aspect-square size-12 shrink-0 items-center justify-center rounded-xl shadow-sm",
@@ -192,32 +211,24 @@ export default function ActivityPage() {
                                             <selectedActivity.icon className={cn("size-6", selectedActivity.iconColor)} />
                                         </div>
                                         <div className="min-w-0">
-                                            <CardTitle className="text-xl mb-1 truncate">{selectedActivity.title}</CardTitle>
-                                            <CardDescription className="flex items-center gap-1.5 text-xs sm:text-sm">
+                                            <DialogTitle className="text-xl mb-1 truncate">{selectedActivity.title}</DialogTitle>
+                                            <DialogDescription className="flex items-center gap-1.5 text-xs sm:text-sm">
                                                 <Clock className="size-3.5 shrink-0" />
                                                 <span className="truncate">Occurred {selectedActivity.time} • {selectedActivity.date}</span>
-                                            </CardDescription>
+                                            </DialogDescription>
                                         </div>
                                     </div>
-                                    <div className="flex flex-wrap sm:flex-nowrap gap-2 w-full sm:w-auto">
-                                        <button className="flex-1 sm:flex-none inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors">
-                                            <ExternalLink className="mr-2 size-4" />
-                                            Open Link
-                                        </button>
-                                        <button className="flex-1 sm:flex-none inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
-                                            View Analytics
-                                        </button>
-                                    </div>
                                 </div>
-                            </CardHeader>
-                            <CardContent className="flex-1 overflow-y-auto p-8 space-y-8">
+                            </DialogHeader>
+
+                            <div className="p-8 space-y-8">
                                 {/* Activity Summary */}
                                 <div className="space-y-4">
                                     <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                                         <Search className="size-4" />
                                         Activity Summary
                                     </h3>
-                                    <p className="text-lg leading-relaxed text-foreground/90 bg-background p-6 rounded-xl border border-border/50 shadow-sm">
+                                    <p className="text-lg leading-relaxed text-foreground/90 bg-muted/20 p-6 rounded-xl border border-border/50">
                                         {selectedActivity.description}
                                     </p>
                                 </div>
@@ -331,21 +342,21 @@ export default function ActivityPage() {
                                         </div>
                                     </div>
                                 </div>
-                            </CardContent>
-                        </>
-                    ) : (
-                        <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground p-12 text-center">
-                            <div className="size-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                                <Activity className="size-8 opacity-20" />
+
+                                <div className="flex flex-wrap sm:flex-nowrap gap-2 pt-6 border-t">
+                                    <button className="flex-1 sm:flex-none inline-flex h-9 items-center justify-center rounded-md border border-input bg-background px-4 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-colors">
+                                        <ExternalLink className="mr-2 size-4" />
+                                        Open Link
+                                    </button>
+                                    <button className="flex-1 sm:flex-none inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
+                                        View Analytics
+                                    </button>
+                                </div>
                             </div>
-                            <h3 className="text-lg font-semibold mb-1">No Activity Selected</h3>
-                            <p className="max-w-xs text-sm">
-                                Select an activity from the list on the left to view detailed information and metrics.
-                            </p>
-                        </div>
+                        </>
                     )}
-                </Card>
-            </div>
+                </DialogContent>
+            </Dialog>
         </div>
     )
 }
