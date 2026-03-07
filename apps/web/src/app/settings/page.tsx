@@ -11,7 +11,6 @@ import {
 } from "@az/ui"
 import {
     User,
-    Settings as SettingsIcon,
     Shield,
     Bell,
     Database,

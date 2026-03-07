@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import {
-  ChevronRight,
   LayoutDashboard,
   Link as LinkIcon,
   Settings,

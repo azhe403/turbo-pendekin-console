@@ -42,4 +42,8 @@ yarn-error.log*
 next-env.d.ts
 
 # logs
-build_log*.txt
+*.txt
+*.log
+
+# Turborepo
+.turbo

@@ -4,9 +4,6 @@ import { Button } from "@az/ui"
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
 } from "@az/ui"
 import {
     Plus,
