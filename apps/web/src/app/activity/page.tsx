@@ -126,7 +126,7 @@ export default function ActivityPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-180px)] min-h-[600px]">
                 {/* Left Column: Activity List */}
-                <Card className="lg:col-span-7 xl:col-span-8 flex flex-col overflow-hidden">
+                <Card className="lg:col-span-8 flex flex-col overflow-hidden">
                     <CardHeader className="border-b bg-muted/30 py-4">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-lg">Recent Changes</CardTitle>
@@ -179,7 +179,7 @@ export default function ActivityPage() {
                 </Card>
 
                 {/* Right Column: Detail View */}
-                <Card className="lg:col-span-5 xl:col-span-4 flex flex-col overflow-hidden bg-muted/5">
+                <Card className="lg:col-span-4 flex flex-col overflow-hidden bg-muted/5">
                     {selectedActivity ? (
                         <>
                             <CardHeader className="border-b bg-background py-6">
