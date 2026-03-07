@@ -49,9 +49,11 @@ function AnimatedCounter({ value, duration = 2000 }: { value: string; duration?:
 
 export default function Home() {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [mounted, setMounted] = useState(false);
 
   // Update time every second
   useEffect(() => {
+    setMounted(true);
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -181,7 +183,7 @@ export default function Home() {
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Last Updated</span>
                 <span className="text-xs text-muted-foreground">
-                  {currentTime.toLocaleTimeString()}
+                  {mounted ? currentTime.toLocaleTimeString() : '--:--:--'}
                 </span>
               </div>
             </div>
