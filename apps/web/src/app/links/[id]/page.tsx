@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { useParams, useRouter } from "next/navigation"
-import { Button, Input, Label } from "@az/ui"
+import { Button, Input, Label, Switch, cn } from "@az/ui"
 import { ArrowLeft, Copy, ExternalLink, BarChart3, Trash2, Edit, QrCode, Download, Save, X } from "lucide-react"
 import {
   Dialog,
@@ -57,12 +57,17 @@ export default function LinkDetailPage() {
     originalUrl: linkData.originalUrl,
     description: linkData.description,
     shortPath: "abc123", // Extracted from shortUrl
-    expiresAt: linkData.expiresAt
+    expiresAt: linkData.expiresAt,
+    status: linkData.status === "active"
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleStatusChange = (checked: boolean) => {
+    setFormData(prev => ({ ...prev, status: checked }))
   }
 
   const handleSave = () => {
@@ -77,7 +82,8 @@ export default function LinkDetailPage() {
       originalUrl: linkData.originalUrl,
       description: linkData.description,
       shortPath: "abc123",
-      expiresAt: linkData.expiresAt
+      expiresAt: linkData.expiresAt,
+      status: linkData.status === "active"
     })
     setIsEditing(false)
   }
@@ -261,9 +267,17 @@ export default function LinkDetailPage() {
 
               <div>
                 <Label className="text-sm font-medium text-muted-foreground">Status</Label>
-                <div className="mt-1">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                    {linkData.status}
+                <div className="flex items-center gap-2 mt-2">
+                  <Switch
+                    checked={isEditing ? formData.status : linkData.status === "active"}
+                    onCheckedChange={isEditing ? handleStatusChange : undefined}
+                    disabled={!isEditing}
+                  />
+                  <span className={cn(
+                    "text-sm font-medium",
+                    (isEditing ? formData.status : linkData.status === "active") ? "text-green-600" : "text-muted-foreground"
+                  )}>
+                    {(isEditing ? formData.status : linkData.status === "active") ? "Routing Enabled" : "Routing Disabled"}
                   </span>
                 </div>
               </div>
