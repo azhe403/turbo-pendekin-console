@@ -1,7 +1,7 @@
 "use client"
 
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@az/ui";
-import { AppSidebar } from "./app-sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 import { ModeToggle } from "./mode-toggle";
 
 export function ClientLayout({
