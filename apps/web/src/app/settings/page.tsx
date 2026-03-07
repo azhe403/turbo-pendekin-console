@@ -21,33 +21,14 @@ export default function SettingsPage() {
     return (
         <div className="flex flex-1 flex-col gap-6">
             <div className="flex flex-col gap-1">
-                <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+                <h1 className="text-3xl font-bold tracking-tight">General Settings</h1>
                 <p className="text-muted-foreground">
-                    Manage your account settings and preferences.
+                    Manage your basic profile information and preferences.
                 </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-[240px_1fr] gap-8">
-                <aside className="space-y-1">
-                    <Button variant="secondary" className="w-full justify-start gap-3">
-                        <User className="size-4" />
-                        General
-                    </Button>
-                    <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground">
-                        <Shield className="size-4" />
-                        Security
-                    </Button>
-                    <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground">
-                        <Bell className="size-4" />
-                        Notifications
-                    </Button>
-                    <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground">
-                        <Database className="size-4" />
-                        Integration
-                    </Button>
-                </aside>
-
-                <div className="space-y-6">
+            <div className="grid grid-cols-1 gap-8">
+                <div className="space-y-6 max-w-4xl">
                     <Card className="transition-all hover:border-sidebar-ring/30">
                         <CardHeader>
                             <CardTitle>Profile Information</CardTitle>
