@@ -1,0 +1,11 @@
+{
+  "name": "@az/tsconfig",
+  "version": "0.1.0",
+  "description": "TypeScript configuration for @az packages",
+  "main": "base.json",
+  "files": [
+    "base.json",
+    "nextjs.json",
+    "react-library.json"
+  ]
+}
