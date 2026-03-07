@@ -2,8 +2,17 @@
 
 import * as React from "react"
 import { useParams, useRouter } from "next/navigation"
-import { Button } from "@az/ui"
-import { ArrowLeft, Copy, ExternalLink, BarChart3, Trash2, Edit } from "lucide-react"
+import { Button, Input, Label } from "@az/ui"
+import { ArrowLeft, Copy, ExternalLink, BarChart3, Trash2, Edit, QrCode, Download, Save, X } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "@az/ui"
 
 export default function LinkDetailPage() {
   const params = useParams()
@@ -37,10 +46,40 @@ export default function LinkDetailPage() {
   const handleCopyOriginal = async () => {
     try {
       await navigator.clipboard.writeText(linkData.originalUrl)
-      // You could add a toast notification here
     } catch (err) {
       console.error('Failed to copy original URL:', err)
     }
+  }
+
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [formData, setFormData] = React.useState({
+    title: linkData.title,
+    originalUrl: linkData.originalUrl,
+    description: linkData.description,
+    shortPath: "abc123", // Extracted from shortUrl
+    expiresAt: linkData.expiresAt
+  })
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSave = () => {
+    // Add save logic here
+    setIsEditing(false)
+    // You could update linkData here if it was state-based
+  }
+
+  const handleCancel = () => {
+    setFormData({
+      title: linkData.title,
+      originalUrl: linkData.originalUrl,
+      description: linkData.description,
+      shortPath: "abc123",
+      expiresAt: linkData.expiresAt
+    })
+    setIsEditing(false)
   }
 
   const handleDelete = () => {
@@ -65,14 +104,29 @@ export default function LinkDetailPage() {
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm">
-            <Edit className="mr-2 h-4 w-4" />
-            Edit
-          </Button>
-          <Button variant="destructive" size="sm" onClick={handleDelete}>
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete
-          </Button>
+          {isEditing ? (
+            <>
+              <Button variant="outline" size="sm" onClick={handleCancel}>
+                <X className="mr-2 h-4 w-4" />
+                Cancel
+              </Button>
+              <Button variant="default" size="sm" onClick={handleSave}>
+                <Save className="mr-2 h-4 w-4" />
+                Save Changes
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" size="sm" onClick={() => setIsEditing(true)}>
+                <Edit className="mr-2 h-4 w-4" />
+                Edit
+              </Button>
+              <Button variant="destructive" size="sm" onClick={handleDelete}>
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
+              </Button>
+            </>
+          )}
         </div>
       </div>
 
@@ -82,79 +136,131 @@ export default function LinkDetailPage() {
         <div className="space-y-4">
           <div className="rounded-lg border p-6 space-y-4">
             <h2 className="text-lg font-semibold">Link Information</h2>
-            
+
             <div className="space-y-3">
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Short URL</label>
-                <div className="flex items-center gap-2 mt-1">
-                  <div className="flex-1 p-2 bg-muted rounded-md font-mono text-sm break-all">
-                    {linkData.shortUrl}
+                <Label className="text-sm font-medium text-muted-foreground">Short URL</Label>
+                {isEditing ? (
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="flex-none p-2 bg-muted rounded-l-md border-r font-mono text-sm text-muted-foreground">
+                      short.ly/
+                    </div>
+                    <Input
+                      name="shortPath"
+                      value={formData.shortPath}
+                      onChange={handleInputChange}
+                      className="flex-1 rounded-l-none font-mono text-sm"
+                    />
                   </div>
-                  <Button variant="outline" size="sm" onClick={handleCopy}>
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={linkData.shortUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </Button>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm font-medium text-muted-foreground">Original URL</label>
-                <div className="flex items-center gap-2 mt-1">
-                  <div className="flex-1 p-2 bg-muted rounded-md font-mono text-sm break-all">
-                    {linkData.originalUrl}
+                ) : (
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="flex-1 p-2 bg-muted rounded-md font-mono text-sm break-all">
+                      {linkData.shortUrl}
+                    </div>
+                    <Button variant="outline" size="sm" onClick={handleCopy}>
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={linkData.shortUrl} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Button>
                   </div>
-                  <Button variant="outline" size="sm" onClick={handleCopyOriginal}>
-                    <Copy className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={linkData.originalUrl} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
-                  </Button>
-                </div>
+                )}
               </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Title</label>
-                <div className="mt-1 p-2 bg-muted rounded-md">
-                  {linkData.title}
-                </div>
+                <Label className="text-sm font-medium text-muted-foreground">Original URL</Label>
+                {isEditing ? (
+                  <textarea
+                    name="originalUrl"
+                    value={formData.originalUrl}
+                    onChange={handleInputChange}
+                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1 font-mono"
+                  />
+                ) : (
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="flex-1 p-2 bg-muted rounded-md font-mono text-sm break-all">
+                      {linkData.originalUrl}
+                    </div>
+                    <Button variant="outline" size="sm" onClick={handleCopyOriginal}>
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                    <Button variant="outline" size="sm" asChild>
+                      <a href={linkData.originalUrl} target="_blank" rel="noopener noreferrer">
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  </div>
+                )}
               </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Description</label>
-                <div className="mt-1 p-2 bg-muted rounded-md">
-                  {linkData.description}
-                </div>
+                <Label className="text-sm font-medium text-muted-foreground">Title</Label>
+                {isEditing ? (
+                  <Input
+                    name="title"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                    className="mt-1"
+                  />
+                ) : (
+                  <div className="mt-1 p-2 bg-muted rounded-md">
+                    {linkData.title}
+                  </div>
+                )}
               </div>
 
-              <div className="grid grid-cols-1 gap-4">
+              <div>
+                <Label className="text-sm font-medium text-muted-foreground">Description</Label>
+                {isEditing ? (
+                  <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleInputChange}
+                    className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 mt-1"
+                  />
+                ) : (
+                  <div className="mt-1 p-2 bg-muted rounded-md">
+                    {linkData.description}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <Label className="text-sm font-medium text-muted-foreground">Expires</Label>
+                {isEditing ? (
+                  <Input
+                    name="expiresAt"
+                    type="datetime-local"
+                    value={formData.expiresAt.replace(' ', 'T')}
+                    onChange={handleInputChange}
+                    className="mt-1"
+                  />
+                ) : (
+                  <div className="mt-1 p-2 bg-muted rounded-md">
+                    {linkData.expiresAt}
+                  </div>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 gap-4 pt-2 border-t">
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Created</label>
+                  <Label className="text-sm font-medium text-muted-foreground">Created</Label>
                   <div className="mt-1 p-2 bg-muted rounded-md">
                     {linkData.createdAt}
                   </div>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Last Updated</label>
+                  <Label className="text-sm font-medium text-muted-foreground">Last Updated</Label>
                   <div className="mt-1 p-2 bg-muted rounded-md">
                     {linkData.updatedAt}
-                  </div>
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Expires</label>
-                  <div className="mt-1 p-2 bg-muted rounded-md">
-                    {linkData.expiresAt}
                   </div>
                 </div>
               </div>
 
               <div>
-                <label className="text-sm font-medium text-muted-foreground">Status</label>
+                <Label className="text-sm font-medium text-muted-foreground">Status</Label>
                 <div className="mt-1">
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                     {linkData.status}
@@ -178,7 +284,7 @@ export default function LinkDetailPage() {
                 </a>
               </Button>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center p-4 bg-muted rounded-lg">
                 <div className="text-2xl font-bold">{linkData.clicks.toLocaleString()}</div>
@@ -193,21 +299,46 @@ export default function LinkDetailPage() {
 
           {/* QR Code */}
           <div className="rounded-lg border p-6 space-y-4">
-            <h2 className="text-lg font-semibold">QR Code</h2>
-            <div className="flex justify-center">
-              <div className="p-4 bg-white rounded-lg">
-                <img 
-                  src={linkData.qrCode} 
-                  alt="QR Code" 
-                  className="w-32 h-32"
-                />
-              </div>
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">QR Code</h2>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="outline" size="sm">
+                    <QrCode className="mr-2 h-4 w-4" />
+                    Show QR
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-md">
+                  <DialogHeader>
+                    <DialogTitle>QR Code for {linkData.title}</DialogTitle>
+                    <DialogDescription>
+                      Scan this code to open the short link directly.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="flex flex-col items-center justify-center p-6 space-y-4">
+                    <div className="p-4 bg-white rounded-xl shadow-inner border">
+                      <img
+                        src={linkData.qrCode}
+                        alt="QR Code"
+                        className="w-48 h-48"
+                      />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm font-mono font-medium text-blue-600">{linkData.shortUrl}</p>
+                    </div>
+                  </div>
+                  <DialogFooter className="sm:justify-center">
+                    <Button type="button" variant="secondary" className="gap-2">
+                      <Download className="h-4 w-4" />
+                      Download Image
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
-            <div className="flex justify-center">
-              <Button variant="outline" size="sm">
-                Download QR Code
-              </Button>
-            </div>
+            <p className="text-sm text-muted-foreground">
+              Generate a QR code for your link to use in printed materials or offline campaigns.
+            </p>
           </div>
         </div>
       </div>

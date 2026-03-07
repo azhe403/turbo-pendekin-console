@@ -126,7 +126,7 @@ export default function ActivityPage() {
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-180px)] min-h-[600px]">
                 {/* Left Column: Activity List */}
-                <Card className="lg:col-span-5 xl:col-span-4 flex flex-col overflow-hidden">
+                <Card className="lg:col-span-7 xl:col-span-8 flex flex-col overflow-hidden">
                     <CardHeader className="border-b bg-muted/30 py-4">
                         <div className="flex items-center justify-between">
                             <CardTitle className="text-lg">Recent Changes</CardTitle>
@@ -179,7 +179,7 @@ export default function ActivityPage() {
                 </Card>
 
                 {/* Right Column: Detail View */}
-                <Card className="lg:col-span-7 xl:col-span-8 flex flex-col overflow-hidden bg-muted/5">
+                <Card className="lg:col-span-5 xl:col-span-4 flex flex-col overflow-hidden bg-muted/5">
                     {selectedActivity ? (
                         <>
                             <CardHeader className="border-b bg-background py-6">
@@ -223,7 +223,7 @@ export default function ActivityPage() {
                                 </div>
 
                                 {/* Event Data Grid */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="grid grid-cols-1 gap-8">
                                     <div className="space-y-4">
                                         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Link Data</h3>
                                         <div className="rounded-xl border bg-background divide-y divide-border overflow-hidden shadow-sm">
@@ -284,43 +284,48 @@ export default function ActivityPage() {
 
                                     <div className="space-y-4">
                                         <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Event Metadata</h3>
-                                        <div className="rounded-xl border bg-background p-4 space-y-5 shadow-sm">
-                                            <div className="flex items-center gap-4">
-                                                <div className="size-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                                                    <User className="size-4 text-muted-foreground" />
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div className="rounded-xl border bg-background p-4 space-y-5 shadow-sm">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="size-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                                                        <User className="size-4 text-muted-foreground" />
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] text-muted-foreground font-bold uppercase">Performed By</span>
+                                                        <span className="text-sm font-medium">{selectedActivity.actor}</span>
+                                                    </div>
                                                 </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-[10px] text-muted-foreground font-bold uppercase">Performed By</span>
-                                                    <span className="text-sm font-medium">{selectedActivity.actor}</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center gap-4">
-                                                <div className="size-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                                                    <Calendar className="size-4 text-muted-foreground" />
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-[10px] text-muted-foreground font-bold uppercase">Timestamp</span>
-                                                    <span className="text-sm font-medium">{selectedActivity.date}</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center gap-4">
-                                                <div className="size-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                                                    <Globe className="size-4 text-muted-foreground" />
-                                                </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-[10px] text-muted-foreground font-bold uppercase">Origin</span>
-                                                    <span className="text-sm font-medium">Jakarta, Indonesia</span>
+                                                <div className="flex items-center gap-4">
+                                                    <div className="size-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                                                        <Calendar className="size-4 text-muted-foreground" />
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] text-muted-foreground font-bold uppercase">Timestamp</span>
+                                                        <span className="text-sm font-medium">{selectedActivity.date}</span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-4">
-                                                <div className="size-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
-                                                    <Shield className="size-4 text-muted-foreground" />
+
+                                            <div className="rounded-xl border bg-background p-4 space-y-5 shadow-sm">
+                                                <div className="flex items-center gap-4">
+                                                    <div className="size-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                                                        <Globe className="size-4 text-muted-foreground" />
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] text-muted-foreground font-bold uppercase">Origin</span>
+                                                        <span className="text-sm font-medium">Jakarta, Indonesia</span>
+                                                    </div>
                                                 </div>
-                                                <div className="flex flex-col">
-                                                    <span className="text-[10px] text-muted-foreground font-bold uppercase">Verification</span>
-                                                    <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold text-green-600 w-fit">
-                                                        SYSTEM VERIFIED
-                                                    </span>
+                                                <div className="flex items-center gap-4">
+                                                    <div className="size-8 rounded-lg bg-muted flex items-center justify-center shrink-0">
+                                                        <Shield className="size-4 text-muted-foreground" />
+                                                    </div>
+                                                    <div className="flex flex-col">
+                                                        <span className="text-[10px] text-muted-foreground font-bold uppercase">Verification</span>
+                                                        <span className="inline-flex items-center rounded-full bg-green-500/10 px-2 py-0.5 text-[10px] font-bold text-green-600 w-fit">
+                                                            SYSTEM VERIFIED
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
