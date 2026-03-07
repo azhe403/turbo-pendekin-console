@@ -6,11 +6,13 @@ import { ModeToggle } from "./mode-toggle";
 
 export function ClientLayout({
     children,
+    defaultOpen,
 }: {
     children: React.ReactNode;
+    defaultOpen?: boolean;
 }) {
     return (
-        <SidebarProvider>
+        <SidebarProvider defaultOpen={defaultOpen}>
             <AppSidebar variant="inset" />
             <SidebarInset className="transition-all duration-200 ease-in-out">
                 <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">

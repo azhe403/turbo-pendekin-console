@@ -2,15 +2,9 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Button, useSidebar } from "@az/ui"
+import { Button } from "@az/ui"
 
 export default function NotFound() {
-  const { setOpen } = useSidebar()
-
-  React.useEffect(() => {
-    setOpen(false)
-  }, [setOpen])
-
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6 px-4">
       <div className="space-y-2">
