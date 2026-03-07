@@ -16,7 +16,8 @@ import {
     Calendar,
     ChevronRight,
     Search,
-    User
+    User,
+    Activity
 } from "lucide-react"
 import { cn } from "@az/ui"
 
@@ -257,7 +258,7 @@ export default function ActivityPage() {
                                                 <>
                                                     <div className="flex flex-col p-4 gap-1.5">
                                                         <span className="text-xs text-muted-foreground font-medium">Total Clicks</span>
-                                                        <span className="text-lg font-bold text-green-600">{selectedActivity.details.totalClicks.toLocaleString()}</span>
+                                                        <span className="text-lg font-bold text-green-600">{selectedActivity.details.totalClicks?.toLocaleString()}</span>
                                                     </div>
                                                     <div className="flex flex-col p-4 gap-1.5">
                                                         <span className="text-xs text-muted-foreground font-medium">Top Traffic Source</span>

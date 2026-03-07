@@ -12,12 +12,14 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build --filter=!@az/docs && changeset publish"
+    "release": "turbo run build --filter=!@az/docs && changeset publish",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@types/node": "^20.11.24",
     "eslint": "^8.57.0",
+    "husky": "^9.1.7",
     "prettier": "^3.2.5",
     "turbo": "latest",
     "typescript": "^5.3.3"

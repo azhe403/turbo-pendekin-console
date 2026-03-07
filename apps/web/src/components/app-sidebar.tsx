@@ -155,7 +155,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       asChild
                       tooltip={item.title}
                       isActive={isItemActive}
-                      onClick={item.items ? (e) => {
+                      onClick={item.items ? (e: React.MouseEvent) => {
                         e.preventDefault()
                         toggleSubmenu(item.title)
                       } : undefined}
