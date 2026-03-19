@@ -7,13 +7,8 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-    CardFooter,
 } from "@az/ui"
 import {
-    Bell,
-    Mail,
-    Smartphone,
-    Globe
 } from "lucide-react"
 
 export default function NotificationsSettingsPage() {

@@ -12,7 +12,6 @@ import {
 import {
     Shield,
     Lock,
-    Key,
     Smartphone
 } from "lucide-react"
 

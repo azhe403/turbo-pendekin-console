@@ -8,10 +8,6 @@ interface CreateTokenResponse {
   refresh_expire_in?: number;
 }
 
-interface CreateTokenRequest {
-  otp: number;
-}
-
 const API_BASE_URL = 'https://engine-stg.zizibot.nf.azhe.my.id';
 
 export async function createAccessToken(otp: number): Promise<CreateTokenResponse> {

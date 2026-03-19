@@ -1,18 +1,14 @@
 "use client"
 
-import { Button, Input, Label, Separator } from "@az/ui"
+import { Button, Separator } from "@az/ui"
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-    CardFooter,
 } from "@az/ui"
 import {
-    Database,
-    Webhook,
-    Key,
     Plus,
     Github,
     Slack

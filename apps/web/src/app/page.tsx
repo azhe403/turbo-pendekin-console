@@ -2,7 +2,7 @@
 
 import { Button } from '@az/ui';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@az/ui';
-import { Link2, TrendingUp, Users, BarChart3, Clock, ArrowUpRight, ArrowDownRight, ExternalLink, ChevronRight } from 'lucide-react';
+import { Link2, TrendingUp, BarChart3, ArrowUpRight, ExternalLink, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
@@ -14,7 +14,7 @@ function AnimatedCounter({ value, duration = 2000 }: { value: string; duration?:
 
   useEffect(() => {
     let startTime: number;
-    let startValue = 0;
+    const startValue = 0;
     const endValue = numericValue;
 
     const animate = (currentTime: number) => {
@@ -53,12 +53,16 @@ export default function Home() {
 
   // Update time every second
   useEffect(() => {
-    setMounted(true);
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
 
     return () => clearInterval(timer);
+  }, []);
+
+  // Set mounted state
+  useEffect(() => {
+    setMounted(true);
   }, []);
 
   return (

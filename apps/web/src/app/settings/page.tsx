@@ -10,10 +10,6 @@ import {
     CardFooter,
 } from "@az/ui"
 import {
-    User,
-    Shield,
-    Bell,
-    Database,
     Globe
 } from "lucide-react"
 
