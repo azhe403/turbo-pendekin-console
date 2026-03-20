@@ -14,6 +14,7 @@ import {
   Sparkles,
   Shield,
   Database,
+  Zap,
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -38,56 +39,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuGroup,
 } from "@az/ui"
-
-const data = {
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: LayoutDashboard,
-    },
-    {
-      title: "My Links",
-      url: "/links",
-      icon: LinkIcon,
-    },
-    {
-      title: "Analytics",
-      url: "/analytics",
-      icon: BarChart3,
-    },
-    {
-      title: "Activity",
-      url: "/activity",
-      icon: Activity,
-    },
-  ],
-  settings: [
-    {
-      title: "General",
-      url: "/settings",
-      icon: User,
-    },
-    {
-      title: "Security",
-      url: "/settings/security",
-      icon: Shield,
-    },
-    {
-      title: "Notifications",
-      url: "/settings/notifications",
-      icon: Bell,
-    },
-    {
-      title: "Integrations",
-      url: "/settings/integrations",
-      icon: Database,
-    },
-  ],
-}
+import { routes, routeGroups } from "@/lib/routes"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
+
+  // Icon mapping
+  const iconMap = {
+    LayoutDashboard,
+    Zap,
+    LinkIcon,
+    BarChart3,
+    Activity,
+  }
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -99,7 +63,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Link href="/">
+              <Link href={routes.dashboard}>
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                   <div className="size-4 rounded-full bg-white/20" />
                 </div>
@@ -117,16 +81,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupLabel>Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {data.navMain.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title} isActive={pathname === item.url}>
-                    <Link href={item.url}>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {routeGroups.main.map((item) => {
+                const IconComponent = iconMap[item.icon as keyof typeof iconMap]
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild tooltip={item.title} isActive={pathname === item.href}>
+                      <Link href={item.href}>
+                        {IconComponent && <IconComponent />}
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -135,11 +102,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarGroupLabel>Settings</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {data.settings.map((item) => (
+              {routeGroups.settings.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild tooltip={item.title} isActive={pathname === item.url}>
-                    <Link href={item.url}>
-                      {item.icon && <item.icon />}
+                  <SidebarMenuButton asChild tooltip={item.title} isActive={pathname === item.href}>
+                    <Link href={item.href}>
+                      <User />
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuButton>

@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@az/u
 import { Link2, TrendingUp, BarChart3, ArrowUpRight, ExternalLink, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { routes } from '@/lib/routes';
 
 // Animated Counter Component
 function AnimatedCounter({ value, duration = 2000 }: { value: string; duration?: number }) {
@@ -199,14 +200,15 @@ export default function Home() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <div>
-            <CardTitle>Recent Links</CardTitle>
+            <CardTitle>Recent Pendekins</CardTitle>
             <CardDescription>
               Latest created short links
             </CardDescription>
           </div>
           <Button variant="outline" size="sm" asChild>
-            <Link href="/links">
-              View All
+            <Link href={routes.routes}>
+              View All Routes
+              <ChevronRight className="ml-2 size-4" />
             </Link>
           </Button>
         </CardHeader>

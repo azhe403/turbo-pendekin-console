@@ -3,6 +3,8 @@
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@az/ui";
 import { AppSidebar } from "@/components/app-sidebar";
 import { ModeToggle } from "./mode-toggle";
+import { QueryClientProviderWrapper } from "./query-client-provider";
+import { Breadcrumb } from "./breadcrumb";
 
 export function ClientLayout({
     children,
@@ -12,19 +14,22 @@ export function ClientLayout({
     defaultOpen?: boolean;
 }) {
     return (
-        <SidebarProvider defaultOpen={defaultOpen}>
-            <AppSidebar variant="inset" />
-            <SidebarInset className="transition-all duration-200 ease-in-out">
-                <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
-                    <div className="flex items-center gap-2">
-                        <SidebarTrigger className="-ml-1" />
+        <QueryClientProviderWrapper>
+            <SidebarProvider defaultOpen={defaultOpen}>
+                <AppSidebar variant="inset" />
+                <SidebarInset className="transition-all duration-200 ease-in-out">
+                    <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4">
+                        <div className="flex items-center gap-2">
+                            <SidebarTrigger className="-ml-1" />
+                            <Breadcrumb />
+                        </div>
+                        <ModeToggle />
+                    </header>
+                    <div className="flex flex-1 flex-col gap-4 p-4">
+                        {children}
                     </div>
-                    <ModeToggle />
-                </header>
-                <div className="flex flex-1 flex-col gap-4 p-4">
-                    {children}
-                </div>
-            </SidebarInset>
-        </SidebarProvider>
+                </SidebarInset>
+            </SidebarProvider>
+        </QueryClientProviderWrapper>
     );
 }

@@ -8,7 +8,9 @@ import {
 import * as React from "react"
 import { Search, Filter, Copy, BarChart2, ExternalLink, MoreHorizontal, Eye, Plus } from "lucide-react"
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation'
 import { routes } from '@/lib/routes';
+import { CreateRouteModal } from '@/components/create-route-modal';
 
 const links = [
     {
@@ -103,29 +105,42 @@ const links = [
     },
 ]
 
-export default function LinksPage() {
+export default function RoutesPage() {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const [isCreateModalOpen, setIsCreateModalOpen] = React.useState(false)
+
+    // Check if URL has create parameter to open modal
+    React.useEffect(() => {
+        if (searchParams.get('create') === 'true') {
+            setIsCreateModalOpen(true)
+            // Clean up the URL
+            router.replace('/routes')
+        }
+    }, [searchParams, router])
+
     return (
         <div className="flex flex-1 flex-col gap-6">
+            <CreateRouteModal open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen} />
+            
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">MyPendekin</h1>
+                    <h1 className="text-3xl font-bold tracking-tight">Routes</h1>
                     <p className="text-muted-foreground">
                         Manage and track your shortened URLs.
                     </p>
                 </div>
-                <Button className="gap-2" asChild>
-                    <Link href={routes.create}>
-                        <Plus className="size-4" />
-                        Create Link
-                    </Link>
-                </Button>
+                <Button variant="outline" size="sm" onClick={() => setIsCreateModalOpen(true)}>
+                        <Plus className="mr-2 size-4" />
+                        Create Route
+                    </Button>
             </div>
 
             <div className="flex items-center gap-4">
                 <div className="relative flex-1">
                     <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
                     <input
-                        placeholder="Search links..."
+                        placeholder="Search routes..."
                         className="flex h-10 w-full rounded-md border border-input bg-background px-9 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                     />
                 </div>
